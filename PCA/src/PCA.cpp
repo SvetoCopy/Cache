@@ -69,7 +69,10 @@ bool PCACache::put(int key, int value, int index) {
             size++;
             updateMinMax();
         }
-    } else if (get(key, index) != -1) return true;
+    } else if (get(key, index) != -1) {
+        updateMinMax();
+        return true;
+    }
 
     return false;
 }
