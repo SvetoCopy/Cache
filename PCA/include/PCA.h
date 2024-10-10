@@ -16,13 +16,8 @@ private:
     std::unordered_map<int, std::queue<int>> key_indexes;
     std::unordered_map<int, Node> elems;
 
-    Node most_near;
-    Node most_far;
-
     unsigned capacity;
     unsigned size;
-    
-    void updateMinMax(); 
 
 public:
     PCACache(unsigned capacity, std::unordered_map<int, std::queue<int>> key_indexes): 
@@ -30,5 +25,5 @@ public:
 
     int get(int key, int index);
     bool put(int key, int value, int index);
-    bool getFreePlace(int key, int index);
+    bool getFreePlace(int key);
 };

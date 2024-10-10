@@ -18,7 +18,10 @@ int main() {
         std::cin >> arr[i];
     }
 
+    #ifdef DEBUG
     std::cout << "Started Testing" << '\n';
+    #endif
+
     int hit_count = 0;
 
     clock_t start = clock();
@@ -27,9 +30,13 @@ int main() {
     }
 
     clock_t end = clock();
-    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
 
-    std::cout << "Time: " << seconds << "sec" << "\nHit count: " << hit_count << std::endl;
+    #ifdef DEBUG
+    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+    std::cout << "Time: " << seconds << "sec" << "\n";
+    #endif
+
+    std::cout << hit_count << std::endl;
     
     return 0;
 }

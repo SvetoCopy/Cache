@@ -3,17 +3,43 @@
 #include "assert.h"
 #include <iostream>
 
-bool PCACache::getFreePlace(int key, int index) {
+void dump(const std::unordered_map<int, std::queue<int>>& key_indexes,
+          const std::unordered_map<int, Node>& elems) {
+    
+    for (const auto& pair : elems) {
+        std::cout << pair.second.key << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Dump of key_indexes:" << std::endl;
+    for (const auto& pair : key_indexes) {
+        std::cout << "Key: " << pair.first << " -> ";
+        const std::queue<int>& q = pair.second;
+        std::queue<int> temp = q; 
+
+        while (!temp.empty()) {
+            std::cout << temp.front() << " ";
+            temp.pop();
+        }
+        std::cout << std::endl;
+    }
+}
+
+bool PCACache::getFreePlace(int key) {
 
     if (key_indexes[key].empty()) return false;
 
     int next_index = key_indexes[key].front();
-    assert(next_index > index);
 
-    if (next_index < key_indexes[most_far.key].front()) {
-        elems.erase(most_far.key);
-        size--;
-        return true;
+    for (const auto& elem_pair : elems) {
+        int elem_key = elem_pair.second.key;
+        const auto& indexes = key_indexes[elem_key];
+
+        if (indexes.empty() || next_index < indexes.front()) {
+            elems.erase(elem_key);
+            size--;
+            return true;
+        }
     }
     
     return false;
@@ -31,28 +57,6 @@ int PCACache::get(int key, int index) {
     return curr_node.value;
 }
 
-void PCACache::updateMinMax() {
-
-    int begin_elem_key = elems.begin()->second.key;
-
-    most_far = elems.begin()->second;
-    int max_index = key_indexes[begin_elem_key].front();
-
-    for (auto elem : elems) {
-        if (key_indexes[elem.second.key].empty()) {
-            most_far = elem.second;
-            break;
-        }
-        
-        int elem_index = key_indexes[elem.second.key].front();
-
-        if (elem_index > max_index) {
-            max_index = elem_index;
-            most_far = elem.second;
-        }
-    }
-}
-
 bool PCACache::put(int key, int value, int index) {
 
     auto elem = elems.find(key);
@@ -61,18 +65,15 @@ bool PCACache::put(int key, int value, int index) {
     if (elem == elems.end()) {
         bool place_available = true;
         
-        if (size >= capacity) 
-            place_available = getFreePlace(key, index);
-        
+        if (size >= capacity)
+            place_available = getFreePlace(key);
+            
         if (place_available) {
             elems[key] = Node(key, value);
             size++;
-            updateMinMax();
         }
-    } else if (get(key, index) != -1) {
-        updateMinMax();
+    } else if (get(key, index) != -1)
         return true;
-    }
 
     return false;
 }
