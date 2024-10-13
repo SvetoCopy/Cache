@@ -6,6 +6,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(lfu_proj VERSION 1.0)
 
 file(GLOB_RECURSE SRC_FILES src/*.cpp)
-add_executable(LFU_CACHE main.cpp ${SRC_FILES})
 
+add_executable(LFU_CACHE main.cpp ${SRC_FILES})
 target_include_directories(LFU_CACHE PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+add_executable(LFU_UNIT_TEST tests.cpp  ${SRC_FILES})
+target_include_directories(LFU_UNIT_TEST PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_link_libraries(LFU_UNIT_TEST gtest gmock pthread)

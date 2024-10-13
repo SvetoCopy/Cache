@@ -9,3 +9,8 @@ file(GLOB_RECURSE SRC_FILES src/*.cpp)
 add_executable(PCA_CACHE main.cpp ${SRC_FILES})
 
 target_include_directories(PCA_CACHE PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+add_executable(PCA_UNIT_TEST tests.cpp  ${SRC_FILES})
+target_include_directories(PCA_UNIT_TEST PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_link_libraries(PCA_UNIT_TEST gtest gmock pthread)

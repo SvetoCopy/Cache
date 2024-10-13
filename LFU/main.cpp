@@ -6,37 +6,15 @@
 
 int main() {
 
-    int capacity = 0;
-    int num = 0;
+    LFUCache lfu;
+    std::ifstream file("/home/rusal/Desktop/Vladimirov/Cache/tests/012.dat"); 
 
-    std::cin >> capacity >> num;
+    std::stringstream buffer;
+    buffer << file.rdbuf();
 
-    LFUCache lfu(capacity);
-    std::vector<int> arr(num); 
+    std::cout << (lfu.runHitCounting(buffer) == 113501);
 
-    for (int i = 0; i < num; i++) {
-        std::cin >> arr[i];
-    }
-
-    #ifdef DEBUG
-    std::cout << "Started Testing" << '\n';
-    #endif
-
-    int hit_count = 0;
-
-    clock_t start = clock();
-    for (int i = 0; i < num; i++) {
-        hit_count += lfu.put(arr[i], i);
-    }
-
-    clock_t end = clock();
-
-    #ifdef DEBUG
-    double seconds = (double)(end - start) / CLOCKS_PER_SEC;
-    std::cout << "Time: " << seconds << "sec" << "\n";
-    #endif
-
-    std::cout << hit_count << std::endl;
+    file.close();
     
     return 0;
 }

@@ -94,3 +94,25 @@ bool PCACache::put(int key, int value, int index) {
 
     return false;
 }
+
+int PCACache::runHitCounting(std::istream& stream) {
+
+    int num = 0;
+
+    stream >> capacity >> num;
+
+    std::vector<int> arr(num); 
+
+    for (int i = 0; i < num; i++) {
+        stream >> arr[i];
+        key_indexes[arr[i]].push(i);
+    }
+
+    int hit_count = 0;
+
+    for (int i = 0; i < num; i++) {
+        hit_count += put(arr[i], i, i);
+    }
+
+    return hit_count;
+}

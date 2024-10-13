@@ -1,5 +1,6 @@
 #include <unordered_map>
 #include <list>
+#include <sstream>
 
 struct Node {
     int key;
@@ -18,11 +19,11 @@ private:
     unsigned size;
     
     void updateNodeFreq(std::list<Node>::iterator curr_node); 
+    void getFreePlace();
 
 public:
-    LFUCache(unsigned capacity):capacity{capacity}, size{0} {};
 
     int get(int key);
     bool put(int key, int value);
-    void getFreePlace();
+    int runHitCounting(std::istream& stream);
 };

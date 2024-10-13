@@ -58,3 +58,19 @@ bool LFUCache::put(int key, int value) {
 
     return false;
 }
+
+int LFUCache::runHitCounting(std::istream& stream) {
+
+    int num = 0;
+
+    stream >> capacity >> num;
+    int key;
+    int hit_count = 0;
+
+    for (int i = 0; i < num; i++) {
+        stream >> key;
+        hit_count += put(key, i);
+    }
+
+    return hit_count;
+}
