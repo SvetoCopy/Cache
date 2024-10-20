@@ -31,8 +31,6 @@ bool PCACache::getFreePlace(int key) {
 
     int max_key = key;
     int max_index = next_index;
-    bool erased = false;
-    std::vector<int> to_delete {};
 
     for (const auto& elem_pair : elems) {
         int elem_key = elem_pair.second.key;
@@ -40,21 +38,15 @@ bool PCACache::getFreePlace(int key) {
         int elem_index = indexes.front();
 
         if (indexes.empty()) {
-            to_delete.push_back(elem_key);
+            elems.erase(elem_key);
             size--;
-            erased = true;
+            return true;
         }
 
         else if (max_index < indexes.front()) {
             max_index = elem_index;
             max_key = elem_key;
         }
-    }
-
-    if (erased == true) {
-        for (int to_delete_key : to_delete)
-            elems.erase(to_delete_key);
-        return true;
     }
 
     if (max_key != key) {
@@ -80,12 +72,11 @@ int PCACache::get(int key, int index) {
 
 bool PCACache::put(int key, int value, int index) {
 
-    if (key_indexes[key].empty()) return false;
-
     auto elem = elems.find(key);
     key_indexes[key].pop();
 
     if (elem == elems.end()) {
+        if (key_indexes[key].empty()) return false;
         bool place_available = true;
         
         if (size >= capacity)
@@ -95,8 +86,14 @@ bool PCACache::put(int key, int value, int index) {
             elems[key] = Node(key, value);
             size++;
         }
-    } else if (get(key, index) != -1)
+    } else {
+        if (key_indexes[key].empty()) {
+            elems.erase(key);
+            size--;
+        }
+
         return true;
+    }
 
     return false;
 }
@@ -115,7 +112,7 @@ int PCACache::runHitCounting(std::istream& stream) {
     }
 
     int hit_count = 0;
-
+    
     for (int i = 0; i < num; i++) {
         hit_count += put(arr[i], i, i);
     }

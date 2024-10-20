@@ -5,10 +5,10 @@
 
 using namespace std;
 
-TEST(TestGroupName, Subtest_1) {
+TEST(PCATests, test1) {
 
     PCACache pca;
-    std::ifstream file("../tests/input.txt"); 
+    std::ifstream file("../tests/002.txt"); 
 
     std::stringstream buffer;
     buffer << file.rdbuf();
@@ -22,16 +22,44 @@ TEST(TestGroupName, Subtest_1) {
     file.close();
 }
 
-TEST(TestGroupName, Subtest_3) {
+TEST(PCATests, test2) {
   
     PCACache pca;
-    std::ifstream file("../tests/012.dat"); 
+    std::ifstream file("../tests/001.dat"); 
 
     std::stringstream buffer;
     buffer << file.rdbuf();
     int hit_count = pca.runHitCounting(buffer);
 
-    ASSERT_TRUE(hit_count == 113501);
+    ASSERT_TRUE(hit_count == 7);
+
+    file.close();
+}
+
+TEST(PCATests, test3) {
+  
+    PCACache pca;
+    std::ifstream file("../tests/015.dat"); 
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    int hit_count = pca.runHitCounting(buffer);
+
+    ASSERT_TRUE(hit_count == 124450);
+
+    file.close();
+}
+
+TEST(PCATests, test4) {
+  
+    PCACache pca;
+    std::ifstream file("../tests/011.dat"); 
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    int hit_count = pca.runHitCounting(buffer);
+
+    ASSERT_TRUE(hit_count == 89999);
 
     file.close();
 }
