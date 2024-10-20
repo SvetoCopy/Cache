@@ -10,7 +10,6 @@ void dump(const std::unordered_map<int, std::queue<int>>& key_indexes,
         std::cout << pair.second.key << " ";
     }
     std::cout << "Curr elem: "<< put_elem << std::endl;
-    /*
 
     std::cout << "Dump of key_indexes:" << std::endl;
     for (const auto& pair : key_indexes) {
@@ -24,17 +23,16 @@ void dump(const std::unordered_map<int, std::queue<int>>& key_indexes,
         }
         std::cout << std::endl;
     }
-    */
 }
 
 bool PCACache::getFreePlace(int key) {
-
-    if (key_indexes[key].empty()) return false;
 
     int next_index = key_indexes[key].front();
 
     int max_key = key;
     int max_index = next_index;
+    bool erased = false;
+    std::vector<int> to_delete {};
 
     for (const auto& elem_pair : elems) {
         int elem_key = elem_pair.second.key;
@@ -42,15 +40,21 @@ bool PCACache::getFreePlace(int key) {
         int elem_index = indexes.front();
 
         if (indexes.empty()) {
-            max_index = elem_index;
-            max_key = elem_key;
-            break;
+            to_delete.push_back(elem_key);
+            size--;
+            erased = true;
         }
 
-        if (max_index < indexes.front()) {
+        else if (max_index < indexes.front()) {
             max_index = elem_index;
             max_key = elem_key;
         }
+    }
+
+    if (erased == true) {
+        for (int to_delete_key : to_delete)
+            elems.erase(to_delete_key);
+        return true;
     }
 
     if (max_key != key) {
@@ -75,6 +79,8 @@ int PCACache::get(int key, int index) {
 }
 
 bool PCACache::put(int key, int value, int index) {
+
+    if (key_indexes[key].empty()) return false;
 
     auto elem = elems.find(key);
     key_indexes[key].pop();

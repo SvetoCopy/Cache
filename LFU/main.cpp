@@ -7,14 +7,9 @@
 int main() {
 
     LFUCache lfu;
-    std::ifstream file("/home/rusal/Desktop/Vladimirov/Cache/tests/012.dat"); 
 
-    std::stringstream buffer;
-    buffer << file.rdbuf();
+    std::cout << (lfu.runHitCounting(std::cin));
 
-    std::cout << (lfu.runHitCounting(buffer) == 113501);
-
-    file.close();
     
     return 0;
 }
