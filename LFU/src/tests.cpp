@@ -7,7 +7,7 @@ using namespace std;
 
 TEST(TestGroupName, Subtest_1) {
 
-    LFUCache lfu;
+    LFUCache<int, int> lfu;
     std::ifstream file("../tests/011.dat"); 
 
     std::stringstream buffer;
@@ -21,7 +21,7 @@ TEST(TestGroupName, Subtest_1) {
 
 TEST(TestGroupName, Subtest_3) {
   
-    LFUCache lfu;
+    LFUCache<int, int> lfu;
     std::ifstream file("../tests/012.dat"); 
 
     std::stringstream buffer;

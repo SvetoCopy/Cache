@@ -6,7 +6,7 @@
 
 int main() {
 
-    PCACache pca;
+    PCACache<int, int> pca;
     std::cout << pca.runHitCounting(std::cin);
 
     return 0;

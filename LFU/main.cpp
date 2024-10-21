@@ -6,7 +6,7 @@
 
 int main() {
 
-    LFUCache lfu;
+    LFUCache<int, int> lfu;
 
     std::cout << (lfu.runHitCounting(std::cin));
 
