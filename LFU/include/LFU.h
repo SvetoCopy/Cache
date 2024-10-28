@@ -2,24 +2,24 @@
 #include <list>
 #include <sstream>
 
+namespace LFUCache {
 template<class KeyT, class ValueT>
 struct Node {
     KeyT key;
     ValueT value;
-    int freq;
-    Node(KeyT key, ValueT val, int freq): key{key}, value{val}, freq{freq} {};
+    unsigned freq;
 };
 
 template<class KeyT, class ValueT>
 class LFUCache {
 private:
-    std::unordered_map<int, std::list<Node<KeyT, ValueT>>> freq;
+    std::unordered_map<unsigned, std::list<Node<KeyT, ValueT>>> freq;
 
     using freq_list_it = typename std::list<Node<KeyT, ValueT>>::iterator;
 
-    std::unordered_map<int, freq_list_it> elems;
+    std::unordered_map<KeyT, freq_list_it> elems;
 
-    int min_freq;
+    unsigned min_freq;
     unsigned capacity;
     unsigned size;
     
@@ -47,23 +47,16 @@ private:
     }
 
 public:
+    LFUCache(const unsigned capacity): capacity{capacity}, size{0} {};
 
-    ValueT get(KeyT key) {
-        auto find_node = elems.find(key);
-
-        if (find_node == elems.end())
-            return;
-
-        auto curr_node = find_node->second;
-        updateNodeFreq(curr_node);
-
-        return (*curr_node).value;
-    }
-
-    bool put(KeyT key, ValueT value) {
+    bool put(const KeyT& key, const ValueT& value) {
         auto elem = elems.find(key);
 
-        if (elem == elems.end()) {
+        if (elem != elems.end()) {
+            updateNodeFreq(elem->second);
+            return true;
+        }
+        else {
             if (size >= capacity)
                 getFreePlace();
             
@@ -73,23 +66,9 @@ public:
             elems[key] = it;
             min_freq = 0;
             size++;
-        } else return true;
 
-        return false;
-    
-    }
-    int runHitCounting(std::istream& stream) {
-        int num = 0;
-
-        stream >> capacity >> num;
-        int key;
-        int hit_count = 0;
-
-        for (int i = 0; i < num; i++) {
-            stream >> key;
-            hit_count += put(key, i);
+            return false;
         }
-
-        return hit_count;
     }
 };
+}

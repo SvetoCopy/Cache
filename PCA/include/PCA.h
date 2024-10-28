@@ -4,7 +4,7 @@
 #include <sstream>
 
 #define INT_MAX_VALUE 2147483647
-
+namespace PCACache {
 template<class KeyT, class ValueT>
 struct Node {
     KeyT key;
@@ -54,17 +54,10 @@ private:
         return false;
     }
 
-    ValueT get(KeyT key) {
-        auto find_node = elems.find(key);
-
-        if (find_node == elems.end())
-            return -1;
-
-        auto curr_node = find_node->second;
-
-        return curr_node.value;
-    }
-
+public:
+    PCACache(const unsigned capacity, const std::unordered_map<KeyT, std::queue<int>>& key_indexes):
+            capacity{capacity}, key_indexes{key_indexes}, size{0} {};
+    
     bool put(KeyT key, ValueT value, int index) {
         auto elem = elems.find(key);
         key_indexes[key].pop();
@@ -91,26 +84,5 @@ private:
 
         return false;
     }
-
-public:
-    int runHitCounting(std::istream& stream) {
-        int num = 0;
-
-        stream >> capacity >> num;
-
-        std::vector<KeyT> arr(num); 
-
-        for (int i = 0; i < num; i++) {
-            stream >> arr[i];
-            key_indexes[arr[i]].push(i);
-        }
-
-        int hit_count = 0;
-        
-        for (int i = 0; i < num; i++) {
-            hit_count += put(arr[i], i, i);
-        }
-
-        return hit_count;
-    }
 };
+}
