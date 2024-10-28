@@ -19,14 +19,13 @@ private:
     unsigned capacity;
     unsigned size;
 
-    bool getFreePlace(KeyT key) {
+    bool getFreePlace(const KeyT& key) {
         int next_index = key_indexes[key].front();
 
         KeyT max_key = key;
         int max_index = next_index;
 
-        for (const auto& elem_pair : elems) {
-            KeyT elem_key = elem_pair.second.key;
+        for (const auto& [elem_key, elem_node] : elems) {
             const auto& indexes = key_indexes[elem_key];
             int elem_index = indexes.front();
 
@@ -36,7 +35,7 @@ private:
                 return true;
             }
 
-            else if (max_index < indexes.front()) {
+            if (max_index < elem_index) {
                 max_index = elem_index;
                 max_key = elem_key;
             }
@@ -55,7 +54,7 @@ public:
     PCACache(const unsigned capacity, const std::unordered_map<KeyT, std::queue<int>>& key_indexes):
             capacity{capacity}, key_indexes{key_indexes}, size{0} {};
     
-    bool put(KeyT key, ValueT value, int index) {
+    bool put(const KeyT& key, const ValueT& value, int index) {
         auto elem = elems.find(key);
         key_indexes[key].pop();
 
