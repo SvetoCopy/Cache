@@ -56,19 +56,19 @@ public:
             updateNodeFreq(elem->second);
             return true;
         }
-        else {
-            if (size >= capacity)
-                getFreePlace();
-            
-            freq[0].push_front(Node<KeyT, ValueT>(key, value, 0));
-            freq_list_it it = freq[0].begin();
+        
+        if (size >= capacity)
+            getFreePlace();
+        
+        freq[0].push_front(Node<KeyT, ValueT>(key, value, 0));
+        freq_list_it it = freq[0].begin();
 
-            elems[key] = it;
-            min_freq = 0;
-            size++;
+        elems[key] = it;
+        min_freq = 0;
+        size++;
 
-            return false;
-        }
+        return false;
+        
     }
 };
 }

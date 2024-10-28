@@ -4,3 +4,4 @@ project(PCA_and_LFU)
 
 add_subdirectory(LFU)
 add_subdirectory(PCA)
+add_subdirectory(tests)

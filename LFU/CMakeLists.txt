@@ -9,8 +9,3 @@ project(lfu_proj VERSION 1.0)
 
 add_executable(LFU_CACHE main.cpp )
 target_include_directories(LFU_CACHE PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-add_executable(LFU_UNIT_TEST src/tests.cpp  ${SRC_FILES})
-target_include_directories(LFU_UNIT_TEST PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-target_link_libraries(LFU_UNIT_TEST gtest gmock pthread)

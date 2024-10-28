@@ -58,24 +58,24 @@ public:
         auto elem = elems.find(key);
         key_indexes[key].pop();
 
-        if (elem == elems.end()) {
-            if (key_indexes[key].empty()) return false;
-            bool place_available = true;
-            
-            if (size >= capacity)
-                place_available = getFreePlace(key);
-                
-            if (place_available) {
-                elems[key] = Node(key, value);
-                size++;
-            }
-        } else {
+        if (elems.contains(key)) {
             if (key_indexes[key].empty()) {
                 elems.erase(key);
                 size--;
             }
 
             return true;
+        }
+
+        if (key_indexes[key].empty()) return false;
+        bool place_available = true;
+        
+        if (size >= capacity)
+            place_available = getFreePlace(key);
+            
+        if (place_available) {
+            elems[key] = Node(key, value);
+            size++;
         }
 
         return false;
