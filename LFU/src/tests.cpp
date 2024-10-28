@@ -3,7 +3,6 @@
 #include <fstream>
 #include <sstream>
 
-
 int runHitCounting(std::istream& stream) {
     int num = 0;
     unsigned capacity = 0;

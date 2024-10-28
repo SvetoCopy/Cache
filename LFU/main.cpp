@@ -4,27 +4,22 @@
 #include <vector>
 #include <time.h>
 
-int runHitCounting(std::istream& stream) {
+int main() {
     int num = 0;
     unsigned capacity = 0;
 
-    stream >> capacity >> num;
+    std::cin >> capacity >> num;
     int key;
     int hit_count = 0;
 
     LFUCache::LFUCache<int, int> lfu(capacity);
     
-
     for (int i = 0; i < num; i++) {
-        stream >> key;
+        std::cin >> key;
         hit_count += lfu.put(key, i);
     }
 
-    return hit_count;
-}
-
-int main() {
-    std::cout << runHitCounting(std::cin);
+    std::cout << hit_count;
 
     return 0;
 }

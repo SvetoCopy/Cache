@@ -3,14 +3,11 @@
 #include <queue>
 #include <sstream>
 
-#define INT_MAX_VALUE 2147483647
 namespace PCACache {
 template<class KeyT, class ValueT>
 struct Node {
     KeyT key;
     ValueT value;
-    Node(KeyT key, ValueT val): key{key}, value{val} {};
-    Node() {};
 };
 
 template<class KeyT, class ValueT>
